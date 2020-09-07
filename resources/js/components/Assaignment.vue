@@ -1,28 +1,51 @@
 <template>
+
     <v-card
-        class="mx-auto"
+        class="mx-auto d-flex flex-wrap grey lighten-4"
         max-width="100%"
         flat
-        style="padding: 50px;margin-top: 50px">
-        <v-container>
-            <dilog></dilog>
+        style="padding: 1%"
 
-            <H2
-                style="text-align:center;color: white;background-color: #9652ff;margin-left: 30%;margin-right: 30%"
+    >
+        <v-card
+
+            max-width="100%"
+            tile
+            width="100%"
+            flat
+            class="grey lighten-4"
+
+        >
+
+
+            <v-card-title
+                class="white--text justify-center font-weight-bold"
+                style="font-size: 1.3em;padding-bottom: 1.5%;"
             >
-                All Assignment
-            </H2>
+                <v-spacer></v-spacer>
+                <h2 style="color: #3b5998;">
+                    Assignments
+                </h2>
+                <v-spacer></v-spacer>
+                <dilog v-if="permission=='Admin'|| permission=='Teacher'" :data1="Cdata"></dilog>
+            </v-card-title>
 
-            <v-row style="padding: 23px;margin-top:5%;">
-                <v-col
-                    cols="12"
-                    md="4"
-                >
+        </v-card>
+        <v-row style="margin-top:1%;">
+
+            <v-col
+                cols="12"
+                md="4"
+                v-for="(assignment,index) in assignments" :key="assignment.id"
+            >
+                <v-card flat>
                     <v-card
+                        flat
                         class="mx-auto"
-                        color="#9652ff"
-                        dark
-                        max-width="400"
+                        max-width="100%"
+                        height="420"
+                        style="overflow-y: auto;"
+
 
                     >
                         <v-card-title>
@@ -30,150 +53,83 @@
                                 large
                                 left
                             >
-                                mdi-twitter
+                                event
                             </v-icon>
-                            <span class="title font-weight-white">deadline: 2th August 2019 </span>
+                            <span class="title font-weight " style="color:darkred;">Deadline: {{assignment.deadline}}</span>
                         </v-card-title>
-                        <v-card-text style="padding-left: 50px">
-                            20th August 2019
-                        </v-card-text>
-
-
-                        <v-card-text class="headline font-weight-bold">
-                            "Turns out semicolon-less style is easier and safer ;
-                        </v-card-text>
-                        <v-card-text class="headline font-weight-bold" style="color: white">
-                           pdf file
-                        </v-card-text>
-
-
-                        <v-card-actions>
-                            <v-list-item class="grow">
-                                <v-list-item-avatar color="grey darken-3">
-                                    <v-img
-                                        class="elevation-6"
-                                        src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                                    ></v-img>
-                                </v-list-item-avatar>
-
-                                <v-list-item-content>
-                                    <v-list-item-title>Jubayer Ahmed</v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
-
+                        <v-card-actions style="padding-left: 10%">
+                            {{assignment.created_at}}
                         </v-card-actions>
-                    </v-card>
-                </v-col>
-                <v-col
-                    cols="12"
-                    md="4"
-                >
-                    <v-card
-                        class="mx-auto"
-                        color="#9652ff"
-                        dark
-                        max-width="400"
-
-                    >
                         <v-card-title>
-                            <v-icon
-                                large
-                                left
-                            >
-                                mdi-twitter
-                            </v-icon>
-                            <span class="title font-weight-white">deadline: 2th August 2019 </span>
+                            {{assignment.title}}
                         </v-card-title>
-                        <v-card-text style="padding-left: 50px">
-                            20th August 2019
-                        </v-card-text>
-
-
-                        <v-card-text class="headline font-weight-bold">
-                            "Turns out semicolon-less style is easier and safer ;
-                        </v-card-text>
-                        <v-card-text class="headline font-weight-bold" style="color: white">
-                            pdf file
-                        </v-card-text>
-
-
-                        <v-card-actions>
-                            <v-list-item class="grow">
-                                <v-list-item-avatar color="grey darken-3">
-                                    <v-img
-                                        class="elevation-6"
-                                        src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                                    ></v-img>
-                                </v-list-item-avatar>
-
-                                <v-list-item-content>
-                                    <v-list-item-title>Jubayer Ahmed</v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
+                        <v-card-actions style="padding-left:5%;">
+                            <a v-if="assignment.file" :href="'https://jubayerahmed.com/lms/public/uploads/x/x/assignment/'+assignment.file" target="_blank"><button type="button" class="btn btn-sm">Read File</button></a>
 
                         </v-card-actions>
-                    </v-card>
-                </v-col>
-                <v-col
-                    cols="12"
-                    md="4"
-                >
-                    <v-card
-                        class="mx-auto"
-                        color="#9652ff"
-                        dark
-                        max-width="400"
+                        <v-card-text  style="font-size:1.2em;" class="font-weight-bold">
+                            "{{assignment.body}}"
+                        </v-card-text>
 
-                    >
+                    </v-card>
+                    <v-card v-if="permission=='Admin'|| permission=='Teacher'" flat>
                         <v-card-title>
-                            <v-icon
-                                large
-                                left
-                            >
-                                mdi-twitter
-                            </v-icon>
-                            <span class="title font-weight-white">deadline: 2th August 2019 </span>
+                            <VEditDialog :data="assignment"></VEditDialog>
+                            <v-spacer></v-spacer>
+                            <deleteAssignmentDialog  :data="assignment"></deleteAssignmentDialog>
                         </v-card-title>
-                        <v-card-text style="padding-left: 50px">
-                            20th August 2019
-                        </v-card-text>
-
-
-                        <v-card-text class="headline font-weight-bold">
-                            "Turns out semicolon-less style is easier and safer ;
-                        </v-card-text>
-                        <v-card-text class="headline font-weight-bold" style="color: white">
-                            pdf file
-                        </v-card-text>
-
-
-                        <v-card-actions>
-                            <v-list-item class="grow">
-                                <v-list-item-avatar color="grey darken-3">
-                                    <v-img
-                                        class="elevation-6"
-                                        src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                                    ></v-img>
-                                </v-list-item-avatar>
-
-                                <v-list-item-content>
-                                    <v-list-item-title>Jubayer Ahmed</v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
-
-                        </v-card-actions>
                     </v-card>
-                </v-col>
+                </v-card>
+
+            </v-col>
 
 
-            </v-row>
-        </v-container>
+        </v-row>
+        {{geetingClassId}}
+        {{gettingAssignment}}
     </v-card>
 </template>
 <script>
     import dilog from './Assignment_dilog'
+    import VEditDialog from './EditAssignments_dilog.vue'
+    import deleteAssignmentDialog from "./deleteAssignmentDialog.vue";
     export default {
-        components:{dilog}
+        props:['Adata','Cdata'],
+        components:{dilog,VEditDialog,deleteAssignmentDialog},
+        data(){
+            return {
+                assignments:{},
+                class_id:null,
+                permission:null,
+
+
+
+            }
+        },
+        created() {
+            this.permission=User.role();
+            this.listen()
+
+        },
+        computed:{
+            geetingClassId(){
+                this.class_id=this.Cdata;
+            },
+            gettingAssignment(){
+                this.assignments=this.Adata;
+            },
+        },
+        methods:{
+            listen(){
+                EventBus.$on('newAssignment',(an1) =>{
+                    this.assignments.unshift(an1)
+                })
+                EventBus.$on('ass-remove',(ass_r) =>{
+                    this.assignments.splice(this.assignments.indexOf(ass_r), 1);
+                })
+            },
+        },
+
     }
 
 </script>

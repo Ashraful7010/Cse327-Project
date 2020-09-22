@@ -1,229 +1,293 @@
 <template>
- <nav color="grey lighten-3">
-     <v-navigation-drawer
-         :clipped="$vuetify.breakpoint.lgAndUp"
-         app
-         v-model="drawer"
-         color="#9652ff"
-         dark
-         style="font-size:20px;padding-top: 10px;"
-         fixed
-         width="300"
-         flat
+    <div>
+        <nav color="grey lighten-3">
+            <v-navigation-drawer
+                :clipped="$vuetify.breakpoint.lgAndUp"
+                app
+                v-model="drawer"
+                color="#3b5998"
+                dark
+                style="font-size:20px;padding-top: 10px;"
+                fixed
+                width="250"
+                flat
+
+            >
+                <v-list dense
+
+                >
+                    <v-layout column align-center>
+                        <v-flex
+                            class="text-xs-center mt-5"
+                            xs6
+
+                        >
+                            <v-avatar style="margin-left: 15%" size="100">
+                                <v-img :src="'https://jubayerahmed.com/lms/public/uploads/x/x/profile/blank-profile.png'"
+                                       v-if="user.image==null"></v-img>
+                                <v-img :src="'https://jubayerahmed.com/lms/public/uploads/x/x/profile/'+ user.image"
+                                       v-else></v-img>
+                            </v-avatar>
+                            <p style="margin-top: 10px;">{{user.first_name}} {{user.last_name}}</p>
+
+                        </v-flex>
+
+                    </v-layout>
+                    <br>
+
+                    <v-list-item v-if="permission=='Admin'">
+                        <v-list-item-icon>
+                            <v-icon>dashboard</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-title>
+                            <router-link to="/lms/admin/dashboard" style="color: white;text-decoration: none;font-size: 120%">
+                                Dashboard
+                            </router-link>
+                        </v-list-item-title>
+                    </v-list-item>
+
+                    <v-list-item>
+                        <v-list-item-icon>
+                            <v-icon>account_circle</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-title>
+                            <router-link to="/lms/profile" style="color: white;text-decoration: none;font-size: 120%">
+                                Profile
+                            </router-link>
+                        </v-list-item-title>
+                    </v-list-item>
+                    <v-list-item>
+                        <v-list-item-icon>
+                            <v-icon>calendar_today</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-title>
+                            <router-link to="/lms/calendar" style="color: white;text-decoration: none;font-size: 120%">
+                                Calendar View
+                            </router-link>
+                        </v-list-item-title>
+                    </v-list-item>
+
+
+                    <v-list-group v-for="(classs,index) in classes" v-if="classs.status==1" :key="classs.id">
+                        <template v-slot:activator>
+                            <v-list-item-icon>
+                                <v-icon style="color: white">class</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-title style="color: white;font-size: 0.8em">{{classs.name}}</v-list-item-title>
+                        </template>
+                        <div v-for="(auth_subject,index) in classs.auth_subject">
+                            <v-list-item style="margin-left:20%" v-for="(subject,index) in classs.subject" v-if="subject.status==1 && auth_subject==subject.id" :key="subject.id">
+
+                                <v-list-item-title>
+                                    <a :href="'/lms/class/'+subject.name" style="color:white;text-decoration: none;font-size: 120%">{{subject.name}}</a>
+                                </v-list-item-title>
+
+                                <v-list-item-icon >
+                                    <v-icon> menu_book</v-icon>
+                                </v-list-item-icon>
+                            </v-list-item>
+                        </div>
+                    </v-list-group>
+                    <v-list-group v-if="permission=='Admin'">
+                        <template v-slot:activator>
+                            <v-list-item-icon>
+                                <v-icon style="color: white">class</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-title style="color: white;font-size: 0.8em">Class Routine</v-list-item-title>
+                        </template>
+                        <div>
+                            <v-list-item style="margin-left:20%"  v-for="(classs,index) in allclasses" :key="classs.id">
+
+                                <v-list-item-title>
+                                    <a :href="'/lms/class/routine/'+classs.id" style="color:white;text-decoration: none;font-size: 120%">{{classs.name}}</a>
+                                </v-list-item-title>
+
+                                <v-list-item-icon >
+                                    <v-icon> menu_book</v-icon>
+                                </v-list-item-icon>
+                            </v-list-item>
+                        </div>
+                    </v-list-group>
+
+                    <v-list-group v-if="classes !=''">
+                        <template v-slot:activator>
+                            <v-list-item-icon>
+                                <v-icon style="color: white">class</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-title style="color: white;font-size: 0.8em">Class Routine</v-list-item-title>
+                        </template>
+                        <div>
+                            <v-list-item style="margin-left:20%"  v-for="(classs,index) in classes" v-if="classs.status==1" :key="classs.id">
+
+                                <v-list-item-title>
+                                    <a :href="'/lms/class/routine/'+classs.id" style="color:white;text-decoration: none;font-size: 120%">{{classs.name}}</a>
+                                </v-list-item-title>
+
+                                <v-list-item-icon >
+                                    <v-icon> menu_book</v-icon>
+                                </v-list-item-icon>
+                            </v-list-item>
+                        </div>
+                    </v-list-group>
+
+
+                </v-list>
+            </v-navigation-drawer>
+
+            <v-app-bar
+                :clipped-left="$vuetify.breakpoint.lgAndUp"
+                app
+                fixed
+                flat
+                class="grey lighten-2"
+                dark
 
 
 
-     >
-         <v-list dense
+            >
+                <v-app-bar-nav-icon
+                    @click.stop="drawer = !drawer"
+                    depressed
+                    style="background-color:#E0E0E0;color:#757575;"
+                >
 
-         >
-             <v-layout column align-center>
-                 <v-flex
-                     class="text-xs-center mt-5"
-                     xs6
+                </v-app-bar-nav-icon>
+                <v-toolbar-title
+                    class="text-uppercase"
+                    style="background-color:#E0E0E0;color:#757575;width: 300px"
+                >
 
-                 >
-                     <v-avatar size="100">
-                         <img class="text-lg-center" src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg">
-                     </v-avatar>
-                     <p style="margin-top: 10px;">Jubayer Ahmed</p>
-                     <dilog></dilog>
+                    <span class="font-weight-bold">LMS</span>
+                    <span  class="blue-grey--text overline font-italic font-weight-medium">Learning Management System</span>
+                </v-toolbar-title>
+                <v-list v-show="$vuetify.breakpoint.md || $vuetify.breakpoint.lg" class="ma-0 pa-0" style="margin-left:1%;background-color:#E0E0E0;color:#757575;">
+                    <v-list-item
+                    >
+                        <v-list-item-avatar>
+                            <v-img :src="'https://jubayerahmed.com/lms/public/uploads/x/x/profile/blank-profile.png'"
+                                   v-if="user.image==null"></v-img>
+                            <v-img :src="'https://jubayerahmed.com/lms/public/uploads/x/x/profile/'+ user.image"
+                                   v-else></v-img>
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                            <v-list-item-title class="font-weight-bold text-capitalize" style="background-color:#E0E0E0;color:#757575;" > {{user.first_name}} {{user.last_name}}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+                <v-spacer></v-spacer>
 
-                 </v-flex>
+                <div v-show="$vuetify.breakpoint.md || $vuetify.breakpoint.lg" style="margin-left:1%" v-for="(classs,index) in classes" v-if="classs.status==1" :key="classs.id">
+                    <v-menu
+                        transition="slide-y-transition"
+                        nudge-bottom="50"
+                        nudge-width="150"
+                        open-on-hover
+                        allow-overflow
+                        max-width="250"
 
-             </v-layout>
-             <template v-for="item in items">
-                 <v-layout
-                     :key="item.heading"
-                     align-center
-                     row
-                     v-if="item.heading"
-                     :to="item.to"
-                 >
-                     <v-flex
-                         class="text-xs-center"
-                         xs6
-                     >
-                     </v-flex>
-                 </v-layout>
-                 <v-list-group
-                     :key="item.text"
-                     :prepend-icon="item.model ? item.icon : item['icon-alt']"
-                     append-icon=""
-                     v-else-if="item.children"
-                     v-model="item.model"
-                     no-action
-                     sub-group
-                     value="true"
-                 >
+                    >
+                        <template v-slot:activator="{ on }">
+                            <v-btn
+                                rounded
+                                dark
+                                depressed
+                                v-on="on"
+                                class="font-weight-bold"
+                                style="background-color: #757575;color: white"
+
+                            >
+                                {{classs.name}}
+                            </v-btn>
+                        </template>
+
+                        <v-list v-for="(auth_subject,index) in classs.auth_subject" :key="auth_subject.id">
+                            <v-list-item v-for="(subject,index) in classs.subject" v-if="subject.status==1 && auth_subject==subject.id" :key="subject.id">
+
+                                <v-list-item-title>
+                                    <a :href="'/lms/class/'+subject.name" class="font-weight-bold" style="color:#3b5998;text-decoration: none;">{{subject.name}}</a>
+                                </v-list-item-title>
+                                <v-list-item-icon >
+                                    <v-icon style="color:#3b5998" > menu_book</v-icon>
+                                </v-list-item-icon>
+                            </v-list-item>
+
+                        </v-list>
+                    </v-menu>
+                </div>
 
 
-                     <template v-slot:activator>
-                         <v-list-item >
-                             <v-list-item-content>
-                                 <v-list-item-title style="font-size: 15px">
-                                     {{ item.text }}
-                                 </v-list-item-title>
-                             </v-list-item-content>
-                         </v-list-item>
-                     </template>
+                <appNotification></appNotification>
 
-                     <v-list-item
-                         v-for="(child, i) in item.children"
-                         :key="i"
-                         @click=""
-                     >
-                         <v-list-item-action v-if="child.icon">
-                             <v-icon>{{ child.icon }}</v-icon>
-                         </v-list-item-action>
-                         <v-list-item-content>
-                             <v-list-item-title>
-                                 <router-link
-                                     class="white--text"
-                                     :to="child.to"
-                                     style="font-size: 13px"
-                                 >
-                                 {{ child.text }}
-                                 </router-link>
-                             </v-list-item-title>
-                         </v-list-item-content>
-                     </v-list-item>
 
-                 </v-list-group>
-                 <v-list-item
-                     :key="item.text"
-                     @click=""
-                     v-else
-                 >
-                     <v-list-item-action>
-                         <v-icon>{{ item.icon }}</v-icon>
-                     </v-list-item-action>
-                     <v-list-item-content>
-                         <v-list-item-title>
-                             <div class="hidden-sm-and-down">
-                             <router-link class="white--text"
-                              :to="item.to">
-                                 {{item.text}}
-                             </router-link>
-                             </div>
-
-                         </v-list-item-title>
-                     </v-list-item-content>
-                 </v-list-item>
-             </template>
-         </v-list>
-     </v-navigation-drawer>
-
-     <v-app-bar
-         :clipped-left="$vuetify.breakpoint.lgAndUp"
-         app
-         fixed
-         flat
-         class="grey lighten-2"
-         dark
-         style="padding-bottom: 10px"
+                <v-btn
+                    depressed
+                    style="background-color:#E0E0E0;color:#757575;"
 
 
 
+                >
+                    <span class="font-weight-bold" @click="createds" style="text-transform: none;">Log Out</span>
+                    <v-icon right>exit_to_app</v-icon>
+                </v-btn>
 
-     >
-         <v-app-bar-nav-icon
-             @click.stop="drawer = !drawer"
-             depressed
-             color="grey"
-         >
-
-         </v-app-bar-nav-icon>
-         <v-toolbar-title
-             style="width: 300px"
-             class="text-uppercase grey--text"
-         >
-
-             <span class="font-weight-light">LMS</span>
-         </v-toolbar-title>
-         <v-spacer></v-spacer>
-
-
-         <v-btn
-             icon
-             depressed
-             color="grey"
-         >
-             <v-icon>notifications</v-icon>
-         </v-btn>
-         <v-btn
-             icon
-             large
-         >
-             <v-avatar
-                 item
-                 size="32px"
-             >
-                 <v-img
-                     alt="Vuetify"
-                     src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
-                 >
-                 </v-img>
-             </v-avatar>
-         </v-btn>
-
-         <v-btn
-             color="grey lighten-2"
-             depressed
-             class="text-uppercase grey--text"
-
-         >
-             <span>Sign Out</span>
-             <v-icon right>exit_to_app</v-icon>
-         </v-btn>
-
-     </v-app-bar>
- </nav>
+            </v-app-bar>
+        </nav>
+    </div>
 </template>
 <script>
-    import dilog from './Dilog.vue'
+
+    import appNotification from "./appNotification.vue"
     export default
     {
-        components: { dilog },
+        components:{appNotification},
         data(){
+
             return {
+                loggedIn: User.loggedIn(),
                 dialog: false,
                 drawer: null,
+                classes: {},
+                user_id: null,
+                user:{},
+                permission:null,
                 items: [
-                    {icon: 'account_circle', text: 'profile',to:"/profile"},
-                    {icon: 'exit_to_app', text: 'login',to:"/login"},
-                    {icon: 'contacts', text: 'Sign Up',to:"/signup"},
-
-                    {
-                        icon: 'keyboard_arrow_up',
-                        'icon-alt': 'keyboard_arrow_down',
-                        text: 'ClassRoom',
-                        model: false,
-                        children: [
-                            {icon: 'public', text: 'Physics',to:'/class'},
-                        ],
-                    },
-                    {
-                        icon: 'keyboard_arrow_up',
-                        'icon-alt': 'keyboard_arrow_down',
-                        text: 'Exam Result',
-                        model: false,
-                        children: [
-                            {icon: 'public', text: 'Physics',to:'/login'},
-
-                        ],
-                    },
-                    {icon: 'border_all', text: 'Calender View',to:'/calender'},
-                    {icon: 'dashboard', text: 'Admin DashBoard',to:"/admin/dashboard"},
+                    { title: 'Click Me' },
+                    { title: 'Click Me' },
+                    { title: 'Click Me' },
+                    { title: 'Click Me 2' },
                 ],
+                allclasses:{},
+
             }
-        }
+        },
+        created() {
+            this.permission=User.role();
+            this.user_id = User.id();
+            axios.get(`/lms/api/class/${this.user_id}`)
+                .then(res => this.classes = res.data.data);
+            axios.get(`/lms/api/class/all/all`)
+                .then(res => this.allclasses = res.data);
+            axios.get(`/lms/api/information/${this.user_id}`)
+                .then(res => this.user = res.data.data);
+            this.listen();
+        },
+
+        methods:{
+            createds() {
+                User.logout();
+            },
+            listen(){
+                EventBus.$on('newClass',(clas) =>{
+                    this.classes.unshift(clas)
+                })
+            },
+        },
     }
 
 </script>
 <style>
-    a {  text-decoration: none;
-         color: white;
-         font-size: 15px;
-         }
+
 </style>

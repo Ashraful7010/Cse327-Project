@@ -1,112 +1,46 @@
 <template>
     <div>
-        <v-app class="grey lighten-2">
-
-
-            <Navbar />
-            <v-content class="mx-4 mb-4">
-                <router-view></router-view>
+        <v-app >
+            <Navbar class="grey lighten-2" />
+            <v-content class="grey lighten-4 mx-1 mb-1">
+                <router-view/>
+                <vue-progress-bar> </vue-progress-bar>
             </v-content>
+            <f/>
 
-
-<!--            <v-btn-->
-<!--                @click="dialog = !dialog"-->
-<!--                bottom-->
-<!--                color="pink"-->
-<!--                dark-->
-<!--                fab-->
-<!--                fixed-->
-<!--                right-->
-<!--            >-->
-<!--                <v-icon>add</v-icon>-->
-<!--            </v-btn>-->
-<!--            <v-dialog-->
-<!--                v-model="dialog"-->
-<!--                width="800px"-->
-<!--            >-->
-<!--                <v-card>-->
-<!--                    <v-card-title class="grey darken-2">-->
-<!--                        Create contact-->
-<!--                    </v-card-title>-->
-<!--                    <v-container grid-list-sm>-->
-<!--                        <v-layout-->
-<!--                            row-->
-<!--                            wrap-->
-<!--                        >-->
-<!--                            <v-flex-->
-<!--                                align-center-->
-<!--                                justify-space-between-->
-<!--                                xs12-->
-<!--                            >-->
-<!--                                <v-layout align-center>-->
-<!--                                    <v-avatar-->
-<!--                                        class="mr-3"-->
-<!--                                        size="40px"-->
-<!--                                    >-->
-<!--                                        <img-->
-<!--                                            alt=""-->
-<!--                                            src="//ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png"-->
-<!--                                        >-->
-<!--                                    </v-avatar>-->
-<!--                                    <v-text-field-->
-<!--                                        placeholder="Name"-->
-<!--                                    ></v-text-field>-->
-<!--                                </v-layout>-->
-<!--                            </v-flex>-->
-<!--                            <v-flex xs6>-->
-<!--                                <v-text-field-->
-<!--                                    placeholder="Company"-->
-<!--                                    prepend-icon="business"-->
-<!--                                ></v-text-field>-->
-<!--                            </v-flex>-->
-<!--                            <v-flex xs6>-->
-<!--                                <v-text-field-->
-<!--                                    placeholder="Job title"-->
-<!--                                ></v-text-field>-->
-<!--                            </v-flex>-->
-<!--                            <v-flex xs12>-->
-<!--                                <v-text-field-->
-<!--                                    placeholder="Email"-->
-<!--                                    prepend-icon="mail"-->
-<!--                                ></v-text-field>-->
-<!--                            </v-flex>-->
-<!--                            <v-flex xs12>-->
-<!--                                <v-text-field-->
-<!--                                    placeholder="(000) 000 - 0000"-->
-<!--                                    prepend-icon="phone"-->
-<!--                                    type="tel"-->
-<!--                                ></v-text-field>-->
-<!--                            </v-flex>-->
-<!--                            <v-flex xs12>-->
-<!--                                <v-text-field-->
-<!--                                    placeholder="Notes"-->
-<!--                                    prepend-icon="notes"-->
-<!--                                ></v-text-field>-->
-<!--                            </v-flex>-->
-<!--                        </v-layout>-->
-<!--                    </v-container>-->
-<!--                    <v-card-actions>-->
-<!--                        <v-btn-->
-<!--                            color="primary"-->
-<!--                            text-->
-<!--                        >More-->
-<!--                        </v-btn>-->
-<!--                        <v-spacer></v-spacer>-->
-<!--                        <v-btn-->
-<!--                            @click="dialog = false"-->
-<!--                            color="primary"-->
-<!--                            text-->
-<!--                        >Cancel-->
-<!--                        </v-btn>-->
-<!--                        <v-btn-->
-<!--                            @click="dialog = false"-->
-<!--                            text-->
-<!--                        >Save-->
-<!--                        </v-btn>-->
-<!--                    </v-card-actions>-->
-<!--                </v-card>-->
-<!--            </v-dialog>-->
         </v-app>
-    </div>
-</template>
 
+    </div>
+
+</template>
+<script>
+    import f from './Footer.vue';
+    import Navbar from './Navbar.vue';
+
+    export default
+    {
+
+        components: { Navbar,f},
+        data(){
+            return {
+                UserId:null,
+                allclasses:null,
+            }
+        },
+        created() {
+            this.UserId=User.id();
+            axios.get(`/lms/api/class/all/all`)
+                .then(res => this.allclasses = res.data);
+        },
+
+        beforeRouteEnter(to, from, next) {
+            if (User.loggedIn()) {
+                next();
+            } else {
+                next('/')
+            }
+        },
+
+    }
+
+</script>

@@ -1,113 +1,115 @@
-
 <template>
     <v-row justify="center">
-        <v-dialog v-model="dialog" persistent max-width="600px">
+        <v-dialog max-width="600px" persistent v-model="dialog">
             <template v-slot:activator="{ on }">
-                <v-btn
-                    v-on="on"
-                    style="float: right;background-color: #9652ff;color: white"
-                >View Profile</v-btn>
+                <v-btn depressed small style="background-color: #3b5998;color: white;" v-on="on" width="70">Profile
+                </v-btn>
             </template>
-            <v-card>
-                <v-card-title>
-                    <span class="headline">User Profile</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                        <v-row >
-                            <v-col
-                                cols="12"
-                                md="4"
+            <v-card
+
+            >
+
+                <v-card
+
+                    max-width="100%"
+                    tile
+                    width="100%"
+                    flat
+
+                >
+                    <v-tabs
+                        center-active color="grey lighten-2"
+                        flat
+                        grow
+                    >
+
+                        <v-tab
+
+                            outlined
+                            style="font-size:1em;background-color:#3b5998;color: white;"
+                            tile
+
+
+                        >
+
+                            Student Information
+
+                        </v-tab>
+                    </v-tabs>
+                    <v-row>
+                        <v-col
+                            class="text-center d-flex"
+                            cols="12"
+                            md="5"
+
+
+                        >
+
+                            <v-img
                             >
-                                <v-card
-                                    class="mx-auto"
-                                    max-width="434"
+                                <v-avatar
+                                    color="grey"
+                                    size="200"
                                     tile
-
+                                    rounded
+                                    style="margin-left:10%;border-radius:5%;"
                                 >
-                                    <v-img
-                                        height="100%"
+                                    <v-img :src="'https://jubayerahmed.com/lms/public/uploads/x/x/profile/blank-profile.png'"
+                                           v-if="data.image==null"></v-img>
+                                    <v-img :src="'https://jubayerahmed.com/lms/public/uploads/x/x/profile/'+ data.image"
+                                           v-else></v-img>
+                                </v-avatar>
 
-                                    >
-                                        <v-row
-                                            align="end"
-                                            class="fill-height"
-                                        >
-                                            <v-col
-                                                align-self="start"
-                                                class="pa-0"
-                                                cols="12"
-                                            >
-                                                <v-avatar
-                                                    class="profile"
-                                                    color="grey"
-                                                    size="164"
-                                                    tile
-                                                >
-                                                    <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
-                                                </v-avatar>
-                                            </v-col>
-                                            <v-col class="py-0">
-                                                <v-list-item
-                                                    style="color: #0d47a1"
-                                                >
-                                                    <v-list-item-content>
-                                                        <v-list-item-title class="title">Jubayer Ahmed</v-list-item-title>
-                                                        <v-list-item-subtitle style="padding-bottom:5%">Teacher</v-list-item-subtitle>
-                                                        <dilog></dilog>
-                                                    </v-list-item-content>
-                                                </v-list-item>
-                                            </v-col>
-                                        </v-row>
-                                    </v-img>
-                                </v-card>
+                            </v-img>
+                        </v-col>
+                        <v-col
+                            class="text-center d-flex"
+                            md="7"
+                            cols="12"
+                        >
 
-                            </v-col>
-                            <v-col
-                                cols="6"
-                                md="8"
+                            <v-card-text>
+                                <v-simple-table >
+                                    <tbody align="left">
+                                    <tr>
+                                        <td class="font-weight-black">Name:</td>
+                                        <td class="black--text text-capitalize">{{data.first_name}} {{data.last_name}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-black">Email:</td>
+                                        <td class="black--text">{{data.email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-black">Phone:</td>
+                                        <td class="black--text text-capitalize">{{data.phone}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-black">NID:</td>
+                                        <td class="black--text text-capitalize">{{data.nid}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-weight-black">Address:</td>
+                                        <td class="black--text text-capitalize">{{data.address}}</td>
+                                    </tr>
+                                    </tbody>
+                                </v-simple-table>
 
-                            >
+                            </v-card-text>
+                        </v-col>
+                    </v-row>
+                </v-card>
 
-                                <v-card
-                                    class="mx-auto"
-                                    max-width="100%"
-                                >
-                                    <v-card-text>
-                                        <v-simple-table>
-                                            <thead>
-                                            <tr>
-                                                <th style="background-color: #9652ff"></th>
-                                                <th
-                                                    class="white--text"
-                                                    style="font-size: large;padding-left: 0px;background-color: #9652ff;"
-
-                                                >
-                                                    Profile Information </th>
-
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr v-for="item in desserts" :key="item.name">
-                                                <td class="font-weight-black">{{ item.name }}</td>
-                                                <td class="black--text" >{{ item.calories }}</td>
-
-                                            </tr>
-                                            </tbody>
-                                        </v-simple-table>
-
-                                    </v-card-text>
-
-                                </v-card>
-
-                            </v-col>
-                        </v-row>
-
-                    </v-container>
-                </v-card-text>
                 <v-card-actions>
                     <div class="flex-grow-1"></div>
-                    <v-btn style="background-color:#9652ff;color: white" text @click="dialog = false">Close</v-btn>
+                    <v-btn @click="dialog = false" class="mr-4" style="background-color:#3b5998;color:white;" text>
+                        Close
+                    </v-btn>
+                    <a :href="'/lms/user_profile/'+data.first_name+'/'+data.id"
+                       style="color:white;text-decoration: none;">
+                        <v-btn style="background-color:#3b5998;color:white;text-transform: none" text>Enter Profile
+                        </v-btn>
+                    </a>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -115,28 +117,11 @@
 </template>
 <script>
     export default {
+        props: ['data'],
         data: () => ({
             dialog: false,
-            desserts: [
-                {
-                    name: 'Full Name:',
-                    calories: 'Jubayer Ahmed',
-                },
-                {
-                    name: 'Email:',
-                    calories: 'jubayer@whitepaper.tech',
-                },
-                {
-                    name: 'Phone_no:',
-                    calories: '0181215641',
-                },
-                {
-                    name: 'Address:',
-                    calories: 'c block,bashundhara',
-                },
 
-
-            ],
         }),
+        methods: {}
     }
 </script>

@@ -1,92 +1,77 @@
 <template>
-    <v-container>
-        <v-card
-            max-width="1000"
-            class="mx-auto"
-            height="750"
-            width="700"
-            style="float: left;"
-            flat
+    <v-simple-table
+        fixed-header
+        width="100%"
+        height="100%"
+        class="grey lighten-4"
+        flat
+    >
+        <template v-slot:default>
+            <thead>
+            <tr>
 
-        >
-            <v-toolbar
-                color="#9652ff"
-                dark
-            >
-                <v-toolbar-title>All Student</v-toolbar-title>
-                <v-toolbar-title style="padding-left: 60%">Action</v-toolbar-title>
+                <th style=" font-size: 1.5rem " class="text-left font-weight-black">Name</th>
+                <th style=" font-size: 1.5rem " class="text-center font-weight-black">Profile</th>
+                <th  v-if="permission=='Admin'" style=" font-size: 1.5rem " class="text-center font-weight-black">Action</th>
 
-                <div class="flex-grow-1"></div>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="student in data" v-if="student.role=='Student' && student.Status==1">
+                <td>
+                    <v-list  class="grey lighten-4 ma-0 pa-0" subheader>
+                    <v-list-item
+                    >
+                        <v-list-item-avatar>
+                            <v-img :src="'http://127.0.0.1:8000/uploads/x/x/profile/blank-profile.png'"
+                                   v-if="student.image==null"></v-img>
+                            <v-img :src="'http://127.0.0.1:8000/uploads/x/x/profile/'+ student.image"
+                                   v-else></v-img>
+                        </v-list-item-avatar>
+                        <v-list-item-content>
+                            <v-list-item-title> {{student.first_name}} {{student.last_name}}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+                </td>
+                <td>
+                    <details_dilog :data="student"></details_dilog>
+                </td>
 
-            </v-toolbar>
-            <v-list>
-                <v-list-item
-                    v-for="item in items"
-                    :key="item.title"
-                    @click=""
-                >
-                    <v-list-item-avatar>
-                        <v-img :src="item.avatar"></v-img>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                        <v-list-item-title v-text="item.title"></v-list-item-title>
-                    </v-list-item-content>
+                <td v-if="permission=='Admin'"  class="text-center">
+                    <removeStudentFromClass :data1="data1" :data="student"></removeStudentFromClass>
+                </td>
+            </tr>
+            </tbody>
+        </template>
+    </v-simple-table>
 
-                    <v-list-item-content>
-                        <v-row>
-                            <v-col
-                                cols="12"
-                                md="6"
-                            >
-                                <v-list-item-title>
-                                    <details_dilog></details_dilog>
-
-                                </v-list-item-title>
-                            </v-col>
-                            <v-col
-                                cols="12"
-                                md="6"
-                            >
-                                <v-list-item-title>
-                                    <v-btn
-                                        style="float: right;background-color:darkred;color: white;display: inline"
-                                    >Remove</v-btn>
-                                </v-list-item-title>
-                            </v-col>
-                        </v-row>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-        </v-card>
-    </v-container>
 </template>
 <script>
     import details_dilog from "../components/AdminPannel/details_dilog.vue";
+    import removeStudentFromClass from "./removeStudentFromClass.vue";
     export default {
-        components:{details_dilog},
+        props:['data','data1'],
+        components:{details_dilog,removeStudentFromClass},
         data () {
             return {
-                items: [
-                    { icon: true, title: 'Jason Oner', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
-                    { title: 'Travis Howard', avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
-                    { title: 'Ali Connors', avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
-                    { title: 'Cindy Baker', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
-                    { icon: true, title: 'Jason Oner', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
-                    { title: 'Travis Howard', avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
-                    { title: 'Ali Connors', avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
-                    { title: 'Cindy Baker', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
-                    { icon: true, title: 'Jason Oner', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
-                    { title: 'Travis Howard', avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
-                    { title: 'Ali Connors', avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
-                    { title: 'Cindy Baker', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
-                    { icon: true, title: 'Jason Oner', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
-                    { title: 'Travis Howard', avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
-                    { title: 'Ali Connors', avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
-                    { title: 'Cindy Baker', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
-                ],
+                permission:null,
             }
         },
+        created() {
+            this.permission=User.role();
+            this.listen();
+        },
+        methods:{
+            listen(){
+                EventBus.$on('user-remove',(userRemove) =>{
+                    this.data.splice(this.data.indexOf(userRemove), 1);
+                })
+            },
+        }
     }
 </script>
+<style>
 
+</style>
 

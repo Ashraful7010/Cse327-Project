@@ -11,12 +11,12 @@
                 <v-card-text>
                     <v-container>
                         <v-form @submit.prevent="save">
-                            <v-text-field label="Title:*" v-model="announcement.title"  required ></v-text-field>
+                        <v-text-field label="Title:*" v-model="announcement.title"  required ></v-text-field>
                             <span class="red--text" v-if="errors.title">{{errors.title[0]}}</span>
-                            <v-textarea
-                                label="Description*"
-                                v-model="announcement.body"
-                            ></v-textarea>
+                        <v-textarea
+                            label="Description*"
+                            v-model="announcement.body"
+                        ></v-textarea>
                             <span class="red--text" v-if="errors.body">{{errors.body[0]}}</span>
                         </v-form>
 
@@ -70,23 +70,23 @@
             user(){
                 this.announcement.user_id=User.id();
             },
-            lmsclassid(){
-                this.announcement.lmsclass_id=this.data;
-            },
+             lmsclassid(){
+               this.announcement.lmsclass_id=this.data;
+             },
 
         },
         methods:{
             save(){
                 axios.post('/lms/api/announcement',this.announcement)
                     .then(res =>
-                            this.dialog=false,
+                        this.dialog=false,
                         this.$toasted.show('Announcement Created',{type:'success'}),
                         EventBus.$emit('newAnn',this.announcement),
                         this.errors='',
                         this.x=0
                     )
 
-                    .catch(error =>this.errors = error.response.data.errors)
+                       .catch(error =>this.errors = error.response.data.errors)
 
 
 

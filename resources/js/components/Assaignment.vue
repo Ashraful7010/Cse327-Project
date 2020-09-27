@@ -39,39 +39,39 @@
                 v-for="(assignment,index) in assignments" :key="assignment.id"
             >
                 <v-card flat>
-                    <v-card
-                        flat
-                        class="mx-auto"
-                        max-width="100%"
-                        height="420"
-                        style="overflow-y: auto;"
+                <v-card
+                    flat
+                    class="mx-auto"
+                    max-width="100%"
+                    height="420"
+                    style="overflow-y: auto;"
 
 
-                    >
-                        <v-card-title>
-                            <v-icon
-                                large
-                                left
-                            >
-                                event
-                            </v-icon>
-                            <span class="title font-weight " style="color:darkred;">Deadline: {{assignment.deadline}}</span>
-                        </v-card-title>
-                        <v-card-actions style="padding-left: 10%">
-                            {{assignment.created_at}}
-                        </v-card-actions>
-                        <v-card-title>
-                            {{assignment.title}}
-                        </v-card-title>
-                        <v-card-actions style="padding-left:5%;">
-                            <a v-if="assignment.file" :href="'https://jubayerahmed.com/lms/public/uploads/x/x/assignment/'+assignment.file" target="_blank"><button type="button" class="btn btn-sm">Read File</button></a>
+                >
+                    <v-card-title>
+                        <v-icon
+                            large
+                            left
+                        >
+                            event
+                        </v-icon>
+                        <span class="title font-weight " style="color:darkred;">Deadline: {{assignment.deadline}}</span>
+                    </v-card-title>
+                    <v-card-actions style="padding-left: 10%">
+                        {{assignment.created_at}}
+                    </v-card-actions>
+                    <v-card-title>
+                        {{assignment.title}}
+                    </v-card-title>
+                    <v-card-actions style="padding-left:5%;">
+                        <a v-if="assignment.file" :href="'http://faisalsarker.com/lms/public/uploads/x/x/assignment/'+assignment.file" target="_blank"><button type="button" class="btn btn-sm">Read File</button></a>
 
-                        </v-card-actions>
-                        <v-card-text  style="font-size:1.2em;" class="font-weight-bold">
-                            "{{assignment.body}}"
-                        </v-card-text>
+                    </v-card-actions>
+                    <v-card-text  style="font-size:1.2em;" class="font-weight-bold">
+                        "{{assignment.body}}"
+                    </v-card-text>
 
-                    </v-card>
+                </v-card>
                     <v-card v-if="permission=='Admin'|| permission=='Teacher'" flat>
                         <v-card-title>
                             <VEditDialog :data="assignment"></VEditDialog>
@@ -111,14 +111,14 @@
             this.listen()
 
         },
-        computed:{
+       computed:{
             geetingClassId(){
-                this.class_id=this.Cdata;
+              this.class_id=this.Cdata;
             },
-            gettingAssignment(){
-                this.assignments=this.Adata;
-            },
-        },
+           gettingAssignment(){
+             this.assignments=this.Adata;
+           },
+       },
         methods:{
             listen(){
                 EventBus.$on('newAssignment',(an1) =>{

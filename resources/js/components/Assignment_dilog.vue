@@ -11,42 +11,42 @@
                 <v-card-text>
                     <v-container>
                         <v-form @submit.prevent="send">
-                            <v-text-field v-model="form.title" label="Title*"  required ></v-text-field>
+                        <v-text-field v-model="form.title" label="Title*"  required ></v-text-field>
                             <span class="red--text" v-if="errors.title">{{errors.title[0]}}</span>
-                            <v-textarea
-                                label="Description*"
-                                v-model="form.body"
-                            ></v-textarea>
+                        <v-textarea
+                            label="Description*"
+                            v-model="form.body"
+                        ></v-textarea>
                             <span class="red--text" v-if="errors.body">{{errors.body[0]}}</span>
-                            <div>
-                                <v-dialog
-                                    ref="dialog"
-                                    v-model="modal"
-                                    :return-value.sync="form.deadline"
-                                    persistent
-                                    width="290px"
-                                >
-                                    <template v-slot:activator="{ on }">
-                                        <v-text-field
-                                            v-model="form.deadline"
-                                            label="Deadline*"
-                                            prepend-icon="event"
-                                            readonly
-                                            v-on="on"
-                                        ></v-text-field>
-                                    </template>
-                                    <v-date-picker color="#3b5998" v-model="form.deadline" scrollable>
-                                        <v-spacer></v-spacer>
-                                        <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-                                        <v-btn text color="primary" @click="$refs.dialog.save(form.deadline)">OK</v-btn>
-                                    </v-date-picker>
-                                </v-dialog>
-                            </div>
+                        <div>
+                            <v-dialog
+                                ref="dialog"
+                                v-model="modal"
+                                :return-value.sync="form.deadline"
+                                persistent
+                                width="290px"
+                            >
+                                <template v-slot:activator="{ on }">
+                                    <v-text-field
+                                        v-model="form.deadline"
+                                        label="Deadline*"
+                                        prepend-icon="event"
+                                        readonly
+                                        v-on="on"
+                                    ></v-text-field>
+                                </template>
+                                <v-date-picker color="#3b5998" v-model="form.deadline" scrollable>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+                                    <v-btn text color="primary" @click="$refs.dialog.save(form.deadline)">OK</v-btn>
+                                </v-date-picker>
+                            </v-dialog>
+                        </div>
                             <span class="red--text" v-if="errors.deadline">{{errors.deadline[0]}}</span>
-                            <div class="form-group">
-                                <h4>Add File:</h4>
-                                <input type="file" accept=".doc,.docx,.pptx,.pdf,.jpeg,.png" @change="filechanged"   class="form-control form-control-lg" placeholder="Large form control">
-                            </div>
+                        <div class="form-group">
+                            <h4>Add File:</h4>
+                            <input type="file" accept=".doc,.docx,.pptx,.pdf,.jpeg,.png" @change="filechanged"   class="form-control form-control-lg" placeholder="Large form control">
+                        </div>
                             <br>
                             <v-progress-linear
                                 v-model="uploadPercentage"
@@ -120,7 +120,7 @@
                     }
                 )
                     .then(res =>
-                            this.dialog=false,
+                        this.dialog=false,
                         this.$toasted.show('Assignments Created',{type:'success'}),
                         EventBus.$emit('newAssignment',this.form),
                         this.errors='',
@@ -142,7 +142,7 @@
                 this.form.class_id=this.data1;
             },
             gettingUserId(){
-                this.form.user_id=User.id();
+              this.form.user_id=User.id();
             },
 
         }

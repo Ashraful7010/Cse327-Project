@@ -6,7 +6,7 @@
                 <router-view/>
                 <vue-progress-bar> </vue-progress-bar>
             </v-content>
-            <f/>
+          <f/>
 
         </v-app>
 
@@ -23,8 +23,8 @@
         components: { Navbar,f},
         data(){
             return {
-                UserId:null,
-                allclasses:null,
+               UserId:null,
+               allclasses:null,
             }
         },
         created() {

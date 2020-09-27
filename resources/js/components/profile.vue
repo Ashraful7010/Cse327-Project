@@ -1,24 +1,46 @@
 <template>
-    <v-container class="grey lighten-4" style="padding-bottom:15%;">
+
+    <div class="grey lighten-4" style="padding-bottom:15%;">
         <!-- Stack the columns on mobile by making one full-width and the other half-width -->
-        <v-row class="d-flex" style="margin-bottom: 5%">
-            <v-col
-                cols="12"
-                md="4"
+
+
+        <v-card
+
+            max-width="100%"
+            tile
+            width="100%"
+            flat
+
+        >
+            <v-tabs
+                center-active color="grey lighten-2"
+                flat
+                grow
             >
-                <v-card
-                    class="mx-auto"
-                    max-width="434"
+
+                <v-tab
+
+                    outlined
+                    style="font-size:1em;background-color:#3b5998;color: white;"
                     tile
 
-                >
-                    <v-img
-                        height="100%"
 
+                >
+
+                    profile information
+
+                </v-tab>
+            </v-tabs>
+            <v-row class="d-flex" style="margin-bottom: 5%">
+                <v-col
+                    class="pt-10 text-center d-flex"
+                    md="3"
+                >
+
+                    <v-img
                     >
                         <v-row
-                            align="end"
-                            class="fill-height"
+                            height="10"
                         >
                             <v-col
                                 align-self="start"
@@ -26,74 +48,95 @@
                                 cols="12"
                             >
                                 <v-avatar
-                                    class="profile"
                                     color="grey"
-                                    size="164"
+                                    size="200"
                                     tile
+                                    rounded
+                                    style="border-radius:5%;"
                                 >
-                                    <v-img src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg"></v-img>
+                                    <v-img
+                                        :src="'http://faisalsarker.com/lms/public/uploads/x/x/profile/'+ form.image"></v-img>
                                 </v-avatar>
                             </v-col>
-                            <v-col class="py-0">
+                            <v-col
+                                cols="12"
+                                class="py-0"
+                            >
                                 <v-list-item
                                     style="color: #0d47a1"
                                 >
-                                    <v-list-item-content>
-                                        <v-list-item-title class="title">Jubayer Ahmed</v-list-item-title>
-                                        <v-list-item-subtitle style="padding-bottom:5%">Teacher</v-list-item-subtitle>
-                                        <dilog></dilog>
+                                    <v-list-item-content class="title">
+                                        <dilog :data="form"></dilog>
                                     </v-list-item-content>
                                 </v-list-item>
                             </v-col>
                         </v-row>
                     </v-img>
-                </v-card>
 
-            </v-col>
-            <v-col
-                cols="6"
-                md="8"
-            >
 
-                <v-card
-                    class="mx-auto"
-                    max-width="800"
-                    tile
+                </v-col>
+                <v-col
+                    class="d-flex"
+                    md="8"
                 >
+
                     <v-card-text>
-                        <v-simple-table>
-                            <thead>
-                            <tr>
-                                <th style="background-color: #9652ff"></th>
-                                <th
-                                    class="white--text"
-                                    style="font-size: large;padding-left: 0%;background-color: #9652ff;"
-
-                                >
-                                    Profile Information
-                                </th>
-
-                            </tr>
-                            </thead>
+                        <v-simple-table >
                             <tbody>
-                            <tr :key="item.name" v-for="item in desserts">
-                                <td class="font-weight-black">{{ item.name }}</td>
-                                <td class="black--text">{{ item.calories }}</td>
-
+                            <tr>
+                                <td class="font-weight-black">Name:</td>
+                                <td class="black--text text-capitalize">{{form.first_name}} {{form.last_name}}</td>
                             </tr>
+                            <tr>
+                                <td class="font-weight-black">Role:</td>
+                                <td class="black--text text-capitalize">{{form.role}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-black">Phone:</td>
+                                <td class="black--text text-capitalize">{{form.phone}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-black">Email:</td>
+                                <td class="black--text">{{form.email}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-black">NID:</td>
+                                <td class="black--text text-capitalize">{{form.nid}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-black ">Father’s Name:</td>
+                                <td class="black--text text-capitalize">{{form.father_name}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-black">Mother’s Name:</td>
+                                <td class="black--text text-capitalize">{{form.mother_name}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-black">Parent’s Contact:</td>
+                                <td class="black--text text-capitalize">{{form.parents_contact}}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-weight-black">Address:</td>
+                                <td class="black--text  text-capitalize">{{form.address}}</td>
+                            </tr>
+
+
+
                             </tbody>
                         </v-simple-table>
 
                     </v-card-text>
+                </v-col>
+            </v-row>
+        </v-card>
 
-                </v-card>
 
-            </v-col>
-        </v-row>
         <v-row class="d-flex">
             <v-col
                 cols="12"
-                md="4"
+                md="3"
+                v-for="classe_s in classes"
+                :key="classe_s.id"
             >
                 <v-card
                     class="mx-auto"
@@ -102,285 +145,59 @@
                 >
                     <v-list-item three-line>
                         <v-list-item-content>
-                            <div class="overline mb-4">Class</div>
-                            <v-list-item-title class="headline mb-1">Physics</v-list-item-title>
-                            <v-list-item-subtitle>section:10</v-list-item-subtitle>
+                            <div class="overline mb-4">{{classe_s.class_name}}</div>
+                            <v-list-item-title class="headline mb-1">
+                                {{classe_s.name}}
+                            </v-list-item-title>
+                            <v-list-item-subtitle>Section: {{classe_s.section}}</v-list-item-subtitle>
                         </v-list-item-content>
-
-                        <v-list-item-avatar
-                            color="#9652ff"
-                            size="80"
-                            tile
-                        ></v-list-item-avatar>
                     </v-list-item>
-
                     <v-card-actions>
-                        <v-btn style="color: white;background-color:#9652ff">go to the class</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-            <v-col
-                cols="12"
-                md="4"
-            >
-                <v-card
-                    class="mx-auto"
-                    max-width="344"
-                    outlined
-                >
-                    <v-list-item three-line>
-                        <v-list-item-content>
-                            <div class="overline mb-4">Class</div>
-                            <v-list-item-title class="headline mb-1">Biology</v-list-item-title>
-                            <v-list-item-subtitle>section:1</v-list-item-subtitle>
-                        </v-list-item-content>
+                        <v-btn :href="'/lms/class/'+classe_s.name" style="color: white;background-color:#3b5998">
+                            go to the class
 
-                        <v-list-item-avatar
-                            color="#9652ff"
-                            size="80"
-                            tile
-                        ></v-list-item-avatar>
-                    </v-list-item>
-
-                    <v-card-actions>
-                        <v-btn style="color: white;background-color:#9652ff">go to the class</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-            <v-col
-                cols="12"
-                md="4"
-            >
-                <v-card
-                    class="mx-auto"
-                    max-width="344"
-                    outlined
-                >
-                    <v-list-item three-line>
-                        <v-list-item-content>
-                            <div class="overline mb-4">Class</div>
-                            <v-list-item-title class="headline mb-1">Chemistry</v-list-item-title>
-                            <v-list-item-subtitle>section:5</v-list-item-subtitle>
-                        </v-list-item-content>
-
-                        <v-list-item-avatar
-                            color="#9652ff"
-                            size="80"
-                            tile
-                        ></v-list-item-avatar>
-                    </v-list-item>
-
-                    <v-card-actions>
-                        <v-btn style="color: white;background-color:#9652ff">go to the class</v-btn>
+                        </v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
         </v-row>
-        <v-row class="d-flex">
-            <v-col
-                cols="12"
-                md="4"
-            >
-                <v-card
-                    class="mx-auto"
-                    max-width="344"
-                    outlined
-                >
-                    <v-list-item three-line>
-                        <v-list-item-content>
-                            <div class="overline mb-4">Class</div>
-                            <v-list-item-title class="headline mb-1">Physics</v-list-item-title>
-                            <v-list-item-subtitle>section:10</v-list-item-subtitle>
-                        </v-list-item-content>
 
-                        <v-list-item-avatar
-                            color="#9652ff"
-                            size="80"
-                            tile
-                        ></v-list-item-avatar>
-                    </v-list-item>
-
-                    <v-card-actions>
-                        <v-btn style="color: white;background-color:#9652ff">go to the class</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-            <v-col
-                cols="12"
-                md="4"
-            >
-                <v-card
-                    class="mx-auto"
-                    max-width="344"
-                    outlined
-                >
-                    <v-list-item three-line>
-                        <v-list-item-content>
-                            <div class="overline mb-4">Class</div>
-                            <v-list-item-title class="headline mb-1">Biology</v-list-item-title>
-                            <v-list-item-subtitle>section:1</v-list-item-subtitle>
-                        </v-list-item-content>
-
-                        <v-list-item-avatar
-                            color="#9652ff"
-                            size="80"
-                            tile
-                        ></v-list-item-avatar>
-                    </v-list-item>
-
-                    <v-card-actions>
-                        <v-btn style="color: white;background-color:#9652ff">go to the class</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-            <v-col
-                cols="12"
-                md="4"
-            >
-                <v-card
-                    class="mx-auto"
-                    max-width="344"
-                    outlined
-                >
-                    <v-list-item three-line>
-                        <v-list-item-content>
-                            <div class="overline mb-4">Class</div>
-                            <v-list-item-title class="headline mb-1">Chemistry</v-list-item-title>
-                            <v-list-item-subtitle>section:5</v-list-item-subtitle>
-                        </v-list-item-content>
-
-                        <v-list-item-avatar
-                            color="#9652ff"
-                            size="80"
-                            tile
-                        ></v-list-item-avatar>
-                    </v-list-item>
-
-                    <v-card-actions>
-                        <v-btn style="color: white;background-color:#9652ff">go to the class</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-        </v-row>
-        <v-row class="d-flex">
-            <v-col
-                cols="12"
-                md="4"
-            >
-                <v-card
-                    class="mx-auto"
-                    max-width="344"
-                    outlined
-                >
-                    <v-list-item three-line>
-                        <v-list-item-content>
-                            <div class="overline mb-4">Class</div>
-                            <v-list-item-title class="headline mb-1">Physics</v-list-item-title>
-                            <v-list-item-subtitle>section:10</v-list-item-subtitle>
-                        </v-list-item-content>
-
-                        <v-list-item-avatar
-                            color="#9652ff"
-                            size="80"
-                            tile
-                        ></v-list-item-avatar>
-                    </v-list-item>
-
-                    <v-card-actions>
-                        <v-btn style="color: white;background-color:#9652ff">go to the class</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-            <v-col
-                cols="12"
-                md="4"
-            >
-                <v-card
-                    class="mx-auto"
-                    max-width="344"
-                    outlined
-                >
-                    <v-list-item three-line>
-                        <v-list-item-content>
-                            <div class="overline mb-4">Class</div>
-                            <v-list-item-title class="headline mb-1">Biology</v-list-item-title>
-                            <v-list-item-subtitle>section:1</v-list-item-subtitle>
-                        </v-list-item-content>
-
-                        <v-list-item-avatar
-                            color="#9652ff"
-                            size="80"
-                            tile
-                        ></v-list-item-avatar>
-                    </v-list-item>
-
-                    <v-card-actions>
-                        <v-btn style="color: white;background-color:#9652ff">go to the class</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-            <v-col
-                cols="12"
-                md="4"
-            >
-                <v-card
-                    class="mx-auto"
-                    max-width="344"
-                    outlined
-                >
-                    <v-list-item three-line>
-                        <v-list-item-content>
-                            <div class="overline mb-4">Class</div>
-                            <v-list-item-title class="headline mb-1">Chemistry</v-list-item-title>
-                            <v-list-item-subtitle>section:5</v-list-item-subtitle>
-                        </v-list-item-content>
-
-                        <v-list-item-avatar
-                            color="#9652ff"
-                            size="80"
-                            tile
-                        ></v-list-item-avatar>
-                    </v-list-item>
-
-                    <v-card-actions>
-                        <v-btn style="color: white;background-color:#9652ff">go to the class</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-        </v-row>
-    </v-container>
+    </div>
 </template>
 <script>
     import dilog from "./updateprofile_dilog";
+    import Class from "./Class.vue";
+    import User from "../Helpers/User";
 
     export default {
-        components: {dilog},
+        components: {dilog, Class},
         data() {
             return {
-
-                desserts: [
-                    {
-                        name: 'Full Name:',
-                        calories: 'Jubayer Ahmed',
-                    },
-                    {
-                        name: 'Email:',
-                        calories: 'jubayer@whitepaper.tech',
-                    },
-                    {
-                        name: 'Phone_no:',
-                        calories: '0181215641',
-                    },
-                    {
-                        name: 'Address:',
-                        calories: 'c block,bashundhara',
-                    },
-
-
-                ],
+                form:{},
+                user_id:0,
+                classes:{},
+                userclass:{},
 
             }
-        }
+        },
+        beforeRouteEnter (to, from, next) {
+            if (User.loggedIn()){
+                next();
+            }
+            else
+            {
+                next('/')
+            }
+        },
+        created() {
+            this.userclass=User.name();
+            this.user_id = User.id();
+            axios.get(`/lms/api/information/${this.user_id}`)
+                .then(res=>this.form =res.data.data)
+            axios.get(`/lms/api/auth_class/${this.user_id}`)
+                .then(res=>this.classes =res.data.data)
+        },
+
     }
 </script>
 <style>

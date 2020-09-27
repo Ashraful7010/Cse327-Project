@@ -4,14 +4,14 @@
         max-width="100%"
         flat
         style="padding: 1%"
-    >
+        >
         <v-card
 
             max-width="100%"
             tile
             width="100%"
             flat
-            class="grey lighten-4"
+           class="grey lighten-4"
 
         >
 
@@ -24,11 +24,11 @@
                 <h2 style="color: #3b5998;">
                     Announcements
                 </h2>
-                <v-spacer></v-spacer>
+             <v-spacer></v-spacer>
                 <dilog  v-if="permission=='Admin'|| permission=='Teacher'" style="text-align: right" :data="lmsclass_id"></dilog>
             </v-card-title>
 
-        </v-card>
+            </v-card>
 
         <v-row style="margin-top:1%;">
             <v-col
@@ -37,34 +37,34 @@
                 v-for="(announcement,index) in announcements" :key="announcement.id"
             >
                 <v-card flat>
-                    <v-card
-                        flat
-                        class="mx-auto"
-                        max-width="100%"
-                        height="300"
-                        style="overflow-y: auto"
+                <v-card
+                    flat
+                    class="mx-auto"
+                    max-width="100%"
+                    height="300"
+                    style="overflow-y: auto"
 
 
-                    >
+                >
 
-                        <v-card-title>
-                            <v-icon
-                                large
-                                left
-                            >
-                                announcement
-                            </v-icon>
-                            <span class="title font-weight " style="color:darkred;">{{announcement.title}}</span>
-                        </v-card-title>
-                        <v-card-actions style="padding-left: 10%">
-                            {{announcement.created_at}}
-                        </v-card-actions>
+                    <v-card-title>
+                        <v-icon
+                            large
+                            left
+                        >
+                            announcement
+                        </v-icon>
+                        <span class="title font-weight " style="color:darkred;">{{announcement.title}}</span>
+                    </v-card-title>
+                    <v-card-actions style="padding-left: 10%">
+                   {{announcement.created_at}}
+                   </v-card-actions>
 
 
-                        <v-card-text  style="font-size:1.2em;" class="font-weight-bold">
-                            "{{announcement.body}}"
-                        </v-card-text>
-                    </v-card>
+                    <v-card-text  style="font-size:1.2em;" class="font-weight-bold">
+                        "{{announcement.body}}"
+                    </v-card-text>
+                </v-card>
                     <v-card   v-if="permission=='Admin'|| permission=='Teacher'" flat>
                         <v-card-title >
                             <VEditDialog :data="announcement"></VEditDialog>
@@ -77,8 +77,8 @@
 
             </v-col>
         </v-row>
-        {{getannouncements}}
-        {{getclassid}}
+          {{getannouncements}}
+          {{getclassid}}
 
     </v-card>
 </template>
@@ -121,9 +121,9 @@
 
         },
         computed:{
-            getannouncements(){
-                this.announcements=this.data;
-            },
+          getannouncements(){
+              this.announcements=this.data;
+          },
             getclassid(){
                 this.lmsclass_id=this.datas;
             },
